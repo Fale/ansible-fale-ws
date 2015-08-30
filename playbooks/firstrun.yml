@@ -1,0 +1,59 @@
+---
+# This is a onetime script to be run on all nodes to create basic users & co
+
+- hosts: all
+  tasks:
+  - name: Wheel group with no passowrd from sudoers
+    lineinfile:
+      dest: /etc/sudoers
+      state: present
+      regexp: '^%wheel ALL\='
+      line: '%wheel ALL=(ALL) NOPASSWD:ALL'
+      validate: 'visudo -cf %s'
+
+  - name: Add user fale
+    user:
+      name: fale
+      state: present
+      groups: wheel
+      comment: Fabio Alessandro Locati
+
+  - name: Add authorized_key for fale
+    authorized_key:
+      user: fale
+      key: https://github.com/fale.keys
+
+  - name: Add user ansible
+    user:
+      name: ansible
+      state: present
+      groups: wheel
+      comment: Ansible
+
+  - name: Add authorized_key for ansible
+    authorized_key:
+      user: ansible
+      key: https://github.com/fale.keys
+
+  - name: Disallow root SSH access
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: "^PermitRootLogin"
+      line: "PermitRootLogin no"
+      state: present
+    notify: Restart sshd
+
+  - name: Disallow password authentication
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: "^PasswordAuthentication"
+      line: "PasswordAuthentication no"
+      state: present
+    notify: Restart sshd
+  handlers:
+
+  - name: Restart sshd
+    service:
+      name: sshd
+      state: restarted
+

@@ -1,0 +1,6 @@
+---
+# Create Fale workstation on running machine
+- hosts: ws
+  user: fale
+  roles:
+  - workstation

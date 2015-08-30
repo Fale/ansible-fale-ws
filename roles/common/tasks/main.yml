@@ -1,0 +1,35 @@
+---
+- name: Upgrade all packages
+#  dnf:
+#    name: "*"
+#    state: latest
+  shell: dnf update -y
+  sudo: True
+
+- name: Install common software
+#  dnf:
+#    name: "{{ item }}"
+#    state: present
+  shell: "sudo dnf install -y {{ item }}"
+  sudo: True
+  with_items:
+    - google-chrome-stable
+    - google-talkplugin
+    - google-musicmanager
+    - gstreamer-ffmpeg
+    - gstreamer-plugins-good
+    - gstreamer-plugins-ugly
+    - gstreamer-plugins-bad
+    - gstreamer-plugins-bad-free
+    - gstreamer-plugins-bad-nonfree
+    - gstreamer1-vaapi
+    - gstreamer1-plugins-base
+    - gstreamer1-plugins-bad-free
+    - gstreamer1-plugins-bad-freeworld
+    - gstreamer1-plugins-bad-free-extras
+    - gstreamer1-plugins-good
+    - gstreamer1-plugins-good-extras
+    - gstreamer1-plugins-ugly
+    - libselinux-python
+    - libsemanage-python
+    - vlc

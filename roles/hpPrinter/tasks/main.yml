@@ -1,0 +1,13 @@
+---
+- name: Install required HP software
+#  dnf:
+#    name: "{{ item }}"
+#    state: present
+  shell: "dnf install -y {{ item }}"
+  sudo: True
+  with_items:
+    - hplip
+    - hplip-gui
+
+# The setup can not be done automaticcaly since it's interactive
+# hp-setup -a -i 192.168.1.2

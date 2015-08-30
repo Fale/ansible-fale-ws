@@ -1,0 +1,11 @@
+---
+- name: Add cronjob to check for updates hourly
+  copy:
+    dest: /etc/cron.d/dnfauto
+    owner: root
+    group: root
+    mode: 0644
+    content: |
+      # Check for updates hourly on the dot
+      0 * * * * root dnf upgrade -y
+  sudo: True

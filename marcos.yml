@@ -1,0 +1,9 @@
+---
+# Create Marco workstations (KDE)
+- hosts: marcos
+  user: ansible
+  roles:
+  - common
+  - sshd
+  - hpPrinter
+  - dnfauto

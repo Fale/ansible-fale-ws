@@ -1,0 +1,7 @@
+---
+# Create Aldo workstations (KDE)
+- hosts: aldos
+  user: ansible
+  roles:
+  - common
+  - sshd

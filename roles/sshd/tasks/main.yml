@@ -1,0 +1,25 @@
+---
+- name: Ensure sshd is enabled
+  service:
+    name: sshd
+    state: started
+    enabled: True
+  sudo: True
+
+- name: Disallow root SSH access
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^PermitRootLogin"
+    line: "PermitRootLogin no"
+    state: present
+  sudo: True
+  notify: Restart sshd
+
+- name: Disallow password authentication
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^PasswordAuthentication"
+    line: "PasswordAuthentication no"
+    state: present
+  sudo: True
+  notify: Restart sshd
