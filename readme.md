@@ -12,3 +12,11 @@ Then is possible to do the basic setup
 ## Following runs
 
     ansible-playbook PLAYBOOK.yml
+
+## First run on local machines
+In this case, execute those two commands before anything else
+
+    dnf install -y ansible git sshpass
+    git clone https://github.com/Fale/ansible-fale-ws.git
+
+and ensure that the proper SSH keys are installed properly

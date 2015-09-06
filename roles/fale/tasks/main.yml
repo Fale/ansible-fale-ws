@@ -1,4 +1,10 @@
 ---
+- include: devel.yml
+
+- include: vim.yml
+
+- include: insync.yml
+
 - name: Install some more software
 #  dnf:
 #    name: "{{ item }}"
@@ -9,3 +15,17 @@
     - qbittorrent
     - quassel
     - sshpass
+
+- git:
+    repo: "https://github.com/Fale/fale.github.io.git"
+    dest: /home/fale/faleBlog
+    track_submodules: True
+    force: True
+  sudo: True
+
+- file:
+    name: /home/fale/faleBlog
+    state: directory
+    owner: fale
+    group: fale
+  sudo: True

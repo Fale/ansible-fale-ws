@@ -1,4 +1,0 @@
----
-- yum:
-    name: gofed
-    state: present

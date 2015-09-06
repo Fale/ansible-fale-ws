@@ -1,0 +1,71 @@
+---
+- name: Install some devel software
+#  dnf:
+#    name: "{{ item }}"
+#    state: present
+  shell: "dnf install -y {{ item }}"
+  sudo: True
+  with_items:
+#    - gofed
+    - git
+    - tig
+
+- file:
+    name: /home/fale/ansible
+    state: directory
+    owner: fale
+    group: fale
+  sudo: True
+
+- git:
+    repo: "https://github.com/willthames/ansible-ec2-example.git"
+    dest: /home/fale/ansible/ec2-example
+    track_submodules: True
+    force: True
+  sudo: True
+
+- git:
+    repo: "https://github.com/ansible/ansible-examples.git"
+    dest: /home/fale/ansible/examples
+    track_submodules: True
+    force: True
+  sudo: True
+
+- git:
+    repo: "https://github.com/henrysher/fedora-infra-ansible.git"
+    dest: /home/fale/ansible/fedora
+    track_submodules: True
+    force: True
+  sudo: True
+
+- git:
+    repo: "https://github.com/FloeDesignTechnologies/ansible-haproxy.git"
+    dest: /home/fale/ansible/haproxy
+    track_submodules: True
+    force: True
+  sudo: True
+
+- git:
+    repo: "git@github.com:Fale/ansible-fale-servers.git"
+    dest: /home/fale/ansible/fale-servers
+    track_submodules: True
+    force: True
+    accept_hostkey: True
+    key_file: '/home/fale/.ssh/id_rsa'
+  sudo: True
+
+- git:
+    repo: "git@github.com:otelia/ansible.git"
+    dest: /home/fale/ansible/haproxy
+    track_submodules: True
+    force: True
+    accept_hostkey: True
+    key_file: '/home/fale/.ssh/id_rsa'
+  sudo: True
+
+- file:
+    name: /home/fale/ansible
+    state: directory
+    owner: fale
+    group: fale
+  sudo: True

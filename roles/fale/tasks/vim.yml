@@ -1,0 +1,32 @@
+---
+- name: Install some devel software
+#  dnf:
+#    name: "{{ item }}"
+#    state: present
+  shell: "dnf install -y {{ item }}"
+  sudo: True
+  with_items:
+    - vim
+
+- git:
+    repo: https://github.com/Fale/vim.git
+    dest: /home/fale/.vim
+    track_submodules: True
+    force: True
+  sudo: True
+
+- file:
+    name: /home/fale/.vim
+    state: directory
+    recurse: True
+    owner: fale
+    group: fale
+  sudo: True
+
+- file:
+    name: /home/fale/.vimrc
+    state: link
+    src: /home/fale/.vim/vimrc
+    owner: fale
+    group: fale
+  sudo: True
