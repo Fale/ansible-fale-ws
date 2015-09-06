@@ -13,7 +13,7 @@
   sudo: True
   with_items:
     - qbittorrent
-    - quassel
+    - quassel-client
     - sshpass
 
 - git:

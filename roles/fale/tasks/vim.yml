@@ -1,5 +1,5 @@
 ---
-- name: Install some devel software
+- name: Install vim software
 #  dnf:
 #    name: "{{ item }}"
 #    state: present
@@ -30,3 +30,16 @@
     owner: fale
     group: fale
   sudo: True
+
+- name: Enable COPR for Hack Font
+  shell: 'dnf copr enable -y heliocastro/hack-fonts'
+  sudo: True
+
+- name: Install Hack Font
+#  dnf:
+#    name: "{{ item }}"
+#    state: present
+  shell: "dnf install -y {{ item }}"
+  sudo: True
+  with_items:
+    - hack-fonts
