@@ -5,6 +5,8 @@
 
 - include: insync.yml
 
+- include: modem.yml
+
 - name: Install some more software
 #  dnf:
 #    name: "{{ item }}"

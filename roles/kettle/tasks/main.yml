@@ -1,0 +1,38 @@
+---
+- name: Ensure utilities for kettle are properly installed
+#  dnf:
+#    name: "{{ item }}"
+#    state: present
+  shell: "dnf install -y {{ item }}"
+  sudo: True
+  with_items:
+    - krusader
+    - unzip
+    - java
+    - subversion
+
+- name: Download the PDI installer
+  get_url:
+    url: http://downloads.sourceforge.net/pentaho/pdi-ce-5.0.1.A-stable.zip
+    dest: /opt/pdi-ce-5.0.1.A-stable.zip
+    sha256sum: 4dd2da83f0580ff33509f1fb9080c30704dc5842afba43b0dcdf7c0f1c130aad
+  sudo: True
+
+- name: Unzip file
+  shell: >
+    unzip -o /opt/pdi-ce-5.0.1.A-stable.zip -d /opt;
+    mv /opt/data-integration /opt/pdi50
+  args:
+    creates: /opt/pdi50
+  sudo: True
+
+- name: Get the MySQL and SAP JDBCs
+  copy:
+    src: '{{ item }}'
+    dest: '/opt/pdi50/lib/{{ item }}'
+  sudo: True
+  with_items:
+    - libsapjco3.so
+    - mysql-connector-java-5.1.34-bin.jar
+    - sapjco3.jar
+    - sapjco.jar

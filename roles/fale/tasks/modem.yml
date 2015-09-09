@@ -1,0 +1,6 @@
+---
+- name: Enable ModemManager
+  service:
+    name: ModemManager
+    state: started
+    enabled: yes
