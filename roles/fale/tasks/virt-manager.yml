@@ -7,3 +7,11 @@
   sudo: True
   with_items:
     - virt-manager
+    - libvirt-daemon-kvm
+    - libvirt-daemon-config-network
+
+- name: Run the libvirt daemon
+  service:
+    name: libvirtd
+    state: started
+    enabled: True

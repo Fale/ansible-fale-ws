@@ -9,6 +9,7 @@
 #    - gofed
     - git
     - tig
+    - kate
 
 - file:
     name: /home/fale/ansible
