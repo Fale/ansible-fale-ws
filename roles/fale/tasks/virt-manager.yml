@@ -1,0 +1,9 @@
+---
+- name: Install virt-manager software
+#  dnf:
+#    name: "{{ item }}"
+#    state: present
+  shell: "dnf install -y {{ item }}"
+  sudo: True
+  with_items:
+    - virt-manager
