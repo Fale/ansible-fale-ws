@@ -9,6 +9,8 @@
 
 - include: virt-manager.yml
 
+- include: lenovo.yml
+
 - name: Install some more software
 #  dnf:
 #    name: "{{ item }}"
