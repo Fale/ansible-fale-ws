@@ -18,6 +18,10 @@
     group: fale
   sudo: True
 
+#- name: Fix git behavior
+#  shell: "git config --global push.default simple"
+  
+
 - git:
     repo: "https://github.com/willthames/ansible-ec2-example.git"
     dest: /home/fale/ansible/ec2-example
