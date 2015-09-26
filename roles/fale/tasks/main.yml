@@ -23,6 +23,7 @@
     - qbittorrent
     - quassel-client
     - sshpass
+    - rygel
 
 - git:
     repo: "https://github.com/Fale/fale.github.io.git"
