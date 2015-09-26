@@ -1,0 +1,9 @@
+---
+# Create Grazia workstations (KDE)
+- hosts: grazias
+  user: ansible
+  roles:
+    - common
+    - sshd
+    - libreoffice
+    - kdegames

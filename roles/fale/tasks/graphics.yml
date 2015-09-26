@@ -1,0 +1,10 @@
+---
+- name: Install software
+#  dnf:
+#    name: "{{ item }}"
+#    state: present
+  shell: "dnf install -y {{ item }}"
+  sudo: True
+  with_items:
+    - gimp
+    - inkscape

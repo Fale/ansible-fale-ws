@@ -11,6 +11,8 @@
 
 - include: lenovo.yml
 
+- include: graphics.yml
+
 - name: Install some more software
 #  dnf:
 #    name: "{{ item }}"
