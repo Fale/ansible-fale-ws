@@ -1,0 +1,14 @@
+---
+- name: Ensure epel is enabled
+  yum:
+    name: epel-release
+    state: present
+
+- name: Install needed components
+  yum:
+    name: '{{ item }}'
+    state: present
+  with_items:
+ i3 i3status i3lock rxvt-unicode-256color-ml NetworkManager-tui feh xrandr
+
+lxdm (gtk :()

@@ -1,0 +1,9 @@
+---
+# Create Fale workstations (Fedora WS)
+- hosts: fales
+  user: ansible
+  roles:
+    - common
+    - sshd
+    - hpPrinter
+    - fale

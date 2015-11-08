@@ -1,0 +1,11 @@
+---
+- name: Install libreoffice 
+#  dnf:
+#    name: "{{ item }}"
+#    state: present
+  shell: "sudo dnf install -y {{ item }}"
+  sudo: True
+  with_items:
+    - libreoffice
+    - libreoffice-langpack-it
+    - libreoffice-kde
