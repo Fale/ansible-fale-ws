@@ -1,0 +1,97 @@
+- name: Include some packages
+  dnf:
+      name: "{{ item }}" 
+      state: present
+  with_items:
+  - dnf 
+  - dnf-plugins-core
+  - elinks
+  tags:
+  - mail/client
+
+- name: Enable the neomutt copr
+  command: dnf copr enable -y flatcap/neomutt
+  args:
+      creates: /etc/yum.repos.d/_copr_flatcap-neomutt.repo
+  tags:
+  - mail/client
+
+- name: And install it, of course
+  dnf:
+      name: neomutt
+      state: present
+  tags:
+  - mail/client
+
+- name: Also, we want msmtp for sending and isync for receipt
+  dnf:
+      name: "{{ item }}" 
+      state: present
+  with_items:
+  - msmtp
+  - isync
+  tags:
+  - mail/client
+
+- name: Synchronize some mail-checkery scripts to /usr/local/bin
+  copy:
+      src: mail-check
+      dest: /usr/local/bin
+  tags:
+  - mail/client
+
+- name: Ensure that maildirs are present in homedir
+  file:
+      dest: "/home/{{user}}/.imap-mail/{{item}}"
+      state: directory
+      owner: "{{user}}"
+      group: "{{user}}"
+      mode: 0750
+  with_items:
+  - gmail
+  - redhat
+  - fale
+  tags:
+  - mail/client
+
+- name: Copy top level generic configs
+  copy:
+      src: "{{item}}"
+      dest: "/home/{{user}}/.{{item}}"
+      owner: "{{user}}"
+      group: "{{user}}"
+      mode: 0600
+  with_items:
+#  - mbsync.redhat.crt
+  - mailcap
+  tags:
+  - mail/client
+
+- name: Copy top level user-specific configs
+  copy:
+      src: "{{item}}"
+      dest: "/home/{{user}}/.{{item}}"
+      owner: "{{user}}"
+      group: "{{user}}"
+      mode: 0600
+  with_items:
+  - msmtprc
+  - mbsyncrc
+  - notmuch-config
+  tags:
+  - mail/client
+
+#- name: Sync over the .mutt/ dir.
+#  synchronize:
+#      src: "mutt-{{username}}/"
+#      dest: "/home/{{user}}/.mutt"
+#  tags:
+#  - mail/client
+
+#- name: Lastly, symlink the main muttrc into place
+#  file:
+#      src: "/home/{{user}}/.mutt/muttrc"
+#      dest: "/home/{{user}}/.muttrc"
+#      state: link
+#  tags:
+#  - mail/client

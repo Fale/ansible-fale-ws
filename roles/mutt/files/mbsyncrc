@@ -1,0 +1,61 @@
+IMAPAccount gmail
+# Address to connect to
+Host imap.gmail.com
+User fabiolocati@gmail.com
+PassCmd "/usr/bin/pass mail/gmail/mutt"
+# Use SSL
+AuthMechs PLAIN
+SSLType IMAPS
+SSLVersions TLSv1 TLSv1.1 TLSv1.2
+CertificateFile /etc/ssl/certs/ca-bundle.crt
+
+IMAPStore gmail-remote
+Account gmail
+
+MaildirStore gmail-local
+# The trailing "/" is important
+Path ~/.imap-mail/gmail/
+Inbox ~/.imap-mail/gmail/Inbox
+
+Channel gmail
+Master :gmail-remote:
+Slave :gmail-local:
+# Exclude certain things
+Patterns * !@* !howard-eagle ![Gmail]*
+# Or include everything
+#Patterns *
+# Automatically create missing mailboxes, both locally and on the server
+Create Both
+# Save the synchronization state files in the relevant directory
+SyncState *
+
+IMAPAccount redhat
+# Address to connect to
+Host imap.gmail.com
+User flocati@redhat.com
+PassCmd "/usr/bin/pass mail/redhat/t460s"
+# Use SSL
+AuthMechs PLAIN
+SSLType IMAPS
+SSLVersions TLSv1 TLSv1.1 TLSv1.2
+CertificateFile /etc/ssl/certs/ca-bundle.crt
+
+IMAPStore redhat-remote
+Account redhat
+
+MaildirStore redhat-local
+# The trailing "/" is important
+Path ~/.imap-mail/redhat/
+Inbox ~/.imap-mail/redhat/Inbox
+
+Channel redhat
+Master :redhat-remote:
+Slave :redhat-local:
+# Exclude certain things
+Patterns * !@* !howard-eagle ![Gmail]*
+# Or include everything
+#Patterns *
+# Automatically create missing mailboxes, both locally and on the server
+Create Both
+# Save the synchronization state files in the relevant directory
+SyncState *

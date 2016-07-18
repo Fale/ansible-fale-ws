@@ -1,0 +1,11 @@
+---
+# Create Fale workstations (Fedora WS)
+- hosts: localhost
+  user: root
+  roles:
+#    - common
+#    - sshd
+#    - hpPrinter
+#    - fale
+  - role: mutt
+    user: fale
