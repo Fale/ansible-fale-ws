@@ -1,4 +1,35 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+# Monitor to ensure that the process will not take more than a couple
+# of minutes
+monitor() {
+  local pid=$1 i=0
+
+  while ps $pid &>/dev/null; do
+    if (( i++ > 10 )); then
+      echo "Max checks reached. Sending SIGKILL to ${pid}..." >&2
+      kill -9 $pid; return 1
+    fi
+
+    sleep 10
+  done
+
+  return 0
+}
+
+# Ensure offlineimap is enabled
+if [ ! -f ~/.offlineimap_enabled ]; then
+    echo "IMAP sync is disabled"
+    exit 1
+fi
+
+# Don't care for now
+# Ensure offlineimap is not already running
+#read -r pid < ~/.offlineimap/pid
+#if ps $pid &>/dev/null; then
+#  echo "Process $pid already running. Exiting..." >&2
+#  exit 1
+#fi
 
 /usr/bin/mbsync -a
 /usr/bin/notmuch new

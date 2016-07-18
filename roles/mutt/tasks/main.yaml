@@ -1,32 +1,32 @@
-- name: Include some packages
+- name: Ensure some basic packages are present
   dnf:
-      name: "{{ item }}" 
-      state: present
+    name: '{{ item }}'
+    state: present
   with_items:
-  - dnf 
+  - dnf
   - dnf-plugins-core
   - elinks
   tags:
   - mail/client
 
-- name: Enable the neomutt copr
+- name: Ensure the neomutt copr is enabled
   command: dnf copr enable -y flatcap/neomutt
   args:
-      creates: /etc/yum.repos.d/_copr_flatcap-neomutt.repo
+    creates: /etc/yum.repos.d/_copr_flatcap-neomutt.repo
   tags:
   - mail/client
 
-- name: And install it, of course
+- name: Ensure neomutt is installed
   dnf:
-      name: neomutt
-      state: present
+    name: neomutt
+    state: present
   tags:
   - mail/client
 
 - name: Also, we want msmtp for sending and isync for receipt
   dnf:
-      name: "{{ item }}" 
-      state: present
+    name: '{{ item }}'
+    state: present
   with_items:
   - msmtp
   - isync
@@ -35,18 +35,18 @@
 
 - name: Synchronize some mail-checkery scripts to /usr/local/bin
   copy:
-      src: mail-check
-      dest: /usr/local/bin
+    src: mail-check
+    dest: /usr/local/bin
   tags:
   - mail/client
 
 - name: Ensure that maildirs are present in homedir
   file:
-      dest: "/home/{{user}}/.imap-mail/{{item}}"
-      state: directory
-      owner: "{{user}}"
-      group: "{{user}}"
-      mode: 0750
+    dest: '/home/{{ user }}/.mail/{{ item }}'
+    state: directory
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: 0750
   with_items:
   - gmail
   - redhat
@@ -54,44 +54,54 @@
   tags:
   - mail/client
 
-- name: Copy top level generic configs
+- name: Copy configs
   copy:
-      src: "{{item}}"
-      dest: "/home/{{user}}/.{{item}}"
-      owner: "{{user}}"
-      group: "{{user}}"
-      mode: 0600
+    src: '{{ item }}'
+    dest: '/home/{{ user }}/.{{ item }}'
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: 0600
   with_items:
-#  - mbsync.redhat.crt
   - mailcap
-  tags:
-  - mail/client
-
-- name: Copy top level user-specific configs
-  copy:
-      src: "{{item}}"
-      dest: "/home/{{user}}/.{{item}}"
-      owner: "{{user}}"
-      group: "{{user}}"
-      mode: 0600
-  with_items:
   - msmtprc
   - mbsyncrc
   - notmuch-config
   tags:
   - mail/client
 
-#- name: Sync over the .mutt/ dir.
-#  synchronize:
-#      src: "mutt-{{username}}/"
-#      dest: "/home/{{user}}/.mutt"
-#  tags:
-#  - mail/client
+- name: Add imap_[en|dis]able alias
+  lineinfile:
+    name: '/home/{{ user }}/.bashrc'
+    regexp: '{{ item.regexp }}'
+    line: '{{ item.line }}'
+  with_items:
+  - regexp: '^alias imap_enable='
+    line: alias imap_enable='touch ~/.offlineimap_enabled'
+  - regexp: '^alias imap_disable='
+    line: alias imap_disable='rm ~/.offlineimap_enabled'
 
-#- name: Lastly, symlink the main muttrc into place
-#  file:
-#      src: "/home/{{user}}/.mutt/muttrc"
-#      dest: "/home/{{user}}/.muttrc"
-#      state: link
-#  tags:
-#  - mail/client
+- name: Auto-sync every 10 minutes
+  cron:
+    name: Sync mails
+    minute: '*/10'
+    job: /usr/local/bin/mail-check
+    user: '{{ user }}'
+
+- name: Clone the mutt config repo
+  git:
+    repo: https://github.com/Fale/mutt.git
+    dest: /home/fale/.mutt
+    track_submodules: True
+    force: True
+  become: True
+  become_user: '{{ user }}'
+  tags:
+  - mail/client
+
+- name: Lastly, symlink the main muttrc into place
+  file:
+    src: '/home/{{ user }}/.mutt/muttrc'
+    dest: '/home/{{ user }}/.muttrc'
+    state: link
+  tags:
+  - mail/client

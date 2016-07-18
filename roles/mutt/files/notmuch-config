@@ -11,7 +11,7 @@
 # configured here named ".notmuch".
 #
 [database]
-path=/home/fale/.imap-mail
+path=/home/fale/.mail
 
 # User configuration
 #

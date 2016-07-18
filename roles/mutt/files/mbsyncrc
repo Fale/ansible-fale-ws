@@ -14,8 +14,8 @@ Account gmail
 
 MaildirStore gmail-local
 # The trailing "/" is important
-Path ~/.imap-mail/gmail/
-Inbox ~/.imap-mail/gmail/Inbox
+Path ~/.mail/gmail/
+Inbox ~/.mail/gmail/Inbox
 
 Channel gmail
 Master :gmail-remote:
@@ -45,14 +45,45 @@ Account redhat
 
 MaildirStore redhat-local
 # The trailing "/" is important
-Path ~/.imap-mail/redhat/
-Inbox ~/.imap-mail/redhat/Inbox
+Path ~/.mail/redhat/
+Inbox ~/.mail/redhat/Inbox
 
 Channel redhat
 Master :redhat-remote:
 Slave :redhat-local:
 # Exclude certain things
 Patterns * !@* !howard-eagle ![Gmail]*
+# Or include everything
+#Patterns *
+# Automatically create missing mailboxes, both locally and on the server
+Create Both
+# Save the synchronization state files in the relevant directory
+SyncState *
+
+IMAPAccount fale
+# Address to connect to
+Host imap.kolabnow.com
+User me@fale.io
+PassCmd "/usr/bin/pass mail/fale/pass"
+# Use SSL
+AuthMechs PLAIN
+SSLType IMAPS
+SSLVersions TLSv1 TLSv1.1 TLSv1.2
+CertificateFile /etc/ssl/certs/ca-bundle.crt
+
+IMAPStore fale-remote
+Account fale
+
+MaildirStore fale-local
+# The trailing "/" is important
+Path ~/.mail/fale/
+Inbox ~/.mail/fale/Inbox
+
+Channel fale
+Master :fale-remote:
+Slave :fale-local:
+# Exclude certain things
+Patterns * !Calendar !Configuration !Contacts !Files !Journal !Notes !Sent_RESTORED !Tasks
 # Or include everything
 #Patterns *
 # Automatically create missing mailboxes, both locally and on the server
